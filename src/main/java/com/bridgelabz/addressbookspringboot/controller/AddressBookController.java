@@ -1,9 +1,10 @@
 package com.bridgelabz.addressbookspringboot.controller;
 
+import com.bridgelabz.addressbookspringboot.dto.AddressBookDTO;
+import com.bridgelabz.addressbookspringboot.model.AddressBookModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/addressbook")
@@ -15,22 +16,29 @@ public class AddressBookController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<String> getById(@PathVariable int id) {
-        return new ResponseEntity<>("Get Contact by ID: " + id, HttpStatus.OK);
+    public ResponseEntity<AddressBookModel> getById(@PathVariable long id) {
+        AddressBookModel model = new AddressBookModel(id, "Sparsh", "9999999999",
+                "sparsh@test.com", "123 Main St", "Delhi");
+        return new ResponseEntity<>(model, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<String> addContact(@RequestBody Map<String, String> body) {
-        return new ResponseEntity<>("Added Contact: " + body.get("name"), HttpStatus.CREATED);
+    public ResponseEntity<AddressBookModel> addContact(@RequestBody AddressBookDTO dto) {
+        AddressBookModel model = new AddressBookModel(1, dto.getName(), dto.getPhone(),
+                dto.getEmail(), dto.getAddress(), dto.getCity());
+        return new ResponseEntity<>(model, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateContact(@PathVariable int id, @RequestBody Map<String, String> body) {
-        return new ResponseEntity<>("Updated Contact ID: " + id + " Name: " + body.get("name"), HttpStatus.OK);
+    public ResponseEntity<AddressBookModel> updateContact(@PathVariable long id,
+                                                          @RequestBody AddressBookDTO dto) {
+        AddressBookModel model = new AddressBookModel(id, dto.getName(), dto.getPhone(),
+                dto.getEmail(), dto.getAddress(), dto.getCity());
+        return new ResponseEntity<>(model, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteContact(@PathVariable int id) {
+    public ResponseEntity<String> deleteContact(@PathVariable long id) {
         return new ResponseEntity<>("Deleted Contact ID: " + id, HttpStatus.OK);
     }
 }
