@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/addressbook")
 public class AddressBookController {
@@ -16,8 +18,8 @@ public class AddressBookController {
     private AddressBookService addressBookService;
 
     @GetMapping
-    public ResponseEntity<String> getAll() {
-        return new ResponseEntity<>("Get All Contacts", HttpStatus.OK);
+    public ResponseEntity<List<AddressBookModel>> getAll() {
+        return new ResponseEntity<>(addressBookService.getAllContacts(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -38,6 +40,6 @@ public class AddressBookController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteContact(@PathVariable long id) {
-        return new ResponseEntity<>("Deleted Contact ID: " + id, HttpStatus.OK);
+        return new ResponseEntity<>(addressBookService.deleteContact(id), HttpStatus.OK);
     }
 }
